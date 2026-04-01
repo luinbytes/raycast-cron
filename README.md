@@ -4,10 +4,12 @@ A Raycast extension for cron expression management and OpenClaw integration.
 
 ## Features
 
-- **Cron Expression Builder**: Build cron expressions with an interactive UI
-- **Natural Language Parsing**: Convert phrases like "every Monday at 9am" to cron expressions
-- **OpenClaw Integration**: Create, manage, and monitor OpenClaw cron jobs
-- **Real-time Preview**: See human-readable descriptions as you build expressions
+- **🔄 Cron Expression Builder**: Build cron expressions with an interactive UI
+- **🗣️ Natural Language Parsing**: Convert phrases like "every Monday at 9am" to cron expressions
+- **🔗 OpenClaw Integration**: Create, manage, and monitor OpenClaw cron jobs
+- **👀 Real-time Preview**: See human-readable descriptions as you build expressions
+- **⚡ Job Management**: Enable, disable, delete, and run cron jobs
+- **🔍 Connection Status**: Monitor OpenClaw gateway connectivity
 
 ## Installation
 
@@ -34,22 +36,42 @@ A Raycast extension for cron expression management and OpenClaw integration.
 
 ## Usage
 
-### Basic Commands
+### 📋 Job Listing View
 
-- **List Cron Jobs**: View all OpenClaw cron jobs
-- **Create Job**: Build a new cron expression and create a job
-- **Edit Job**: Modify existing cron jobs
-- **Delete Job**: Remove cron jobs
+The main interface shows all your OpenClaw cron jobs with:
+- Job names and descriptions
+- Cron expressions
+- Enable/disable status
+- Quick actions (run, edit, delete)
 
-### Natural Language Support
+### 🔧 Cron Builder
 
-The extension supports natural language parsing for common patterns:
+Create new cron jobs with the interactive builder:
+- **Quick Presets**: Select from common patterns
+- **Manual Input**: Fine-tune each cron field
+- **Natural Language**: Type phrases like "every Monday at 9am"
+- **Live Preview**: See human-readable descriptions instantly
 
-- "every Monday at 9am" → `0 9 * * 1`
-- "daily at midnight" → `0 0 * * *`
-- "every 2 hours" → `0 */2 * * *`
-- "weekdays at noon" → `0 12 * * 1-5`
-- "first day of every month" → `0 0 1 * *`
+### 🗣️ Natural Language Examples
+
+The extension supports these natural language patterns:
+
+| Phrase | Cron Expression | Description |
+|--------|----------------|-------------|
+| "every Monday at 9am" | `0 9 * * 1` | Every Monday at 9:00 AM |
+| "daily at midnight" | `0 0 * * *` | Every day at 12:00 AM |
+| "every 2 hours" | `0 */2 * * *` | Every 2 hours |
+| "weekdays at noon" | `0 12 * * 1-5` | Monday to Friday at 12:00 PM |
+| "weekends at noon" | `0 12 * * 0,6` | Saturday and Sunday at 12:00 PM |
+| "first day of month" | `0 0 1 * *` | First day of each month |
+| "every 30 minutes" | `*/30 * * * *` | Every 30 minutes |
+
+### 🎯 Quick Actions
+
+- **Run Now**: Execute a cron job immediately for testing
+- **Enable/Disable**: Toggle job execution status
+- **Delete**: Remove jobs with confirmation
+- **Edit**: Modify existing expressions (coming soon)
 
 ## Configuration
 
