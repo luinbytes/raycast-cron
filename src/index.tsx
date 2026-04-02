@@ -24,7 +24,7 @@ export default function ListCronJobs() {
     setIsLoading(true);
     try {
       const jobs = await openclawCronApi.listJobs(true); // Include disabled jobs
-      setJobs(jobs.map(job => ({
+      setJobs((Array.isArray(jobs) ? jobs : []).map(job => ({
         id: job.id,
         name: job.name,
         expression: job.cron,

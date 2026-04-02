@@ -79,14 +79,14 @@ export default function CronBuilder({ onBuild }: CronBuilderProps) {
     }
     
     // Fallback for custom expressions
-    const parts = [];
-    if (minute !== "*") parts.push(`minute ${minute}`);
-    if (hour !== "*") parts.push(`hour ${hour}`);
-    if (dayOfMonth !== "*") parts.push(`day ${dayOfMonth}`);
-    if (month !== "*") parts.push(`month ${month}`);
-    if (dayOfWeek !== "*") parts.push(`weekday ${dayOfWeek}`);
+    const customParts = [];
+    if (minute !== "*") customParts.push(`minute ${minute}`);
+    if (hour !== "*") customParts.push(`hour ${hour}`);
+    if (dayOfMonth !== "*") customParts.push(`day ${dayOfMonth}`);
+    if (month !== "*") customParts.push(`month ${month}`);
+    if (dayOfWeek !== "*") customParts.push(`weekday ${dayOfWeek}`);
     
-    return parts.length > 0 ? `Custom: ${parts.join(", ")}` : "Custom cron expression";
+    return customParts.length > 0 ? `Custom: ${customParts.join(", ")}` : "Custom cron expression";
   };
 
   useEffect(() => {

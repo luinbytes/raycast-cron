@@ -66,7 +66,8 @@ export class OpenClawCronApi {
 
     try {
       const { stdout } = await execAsync(command);
-      const jobs = JSON.parse(stdout);
+      const parsed = JSON.parse(stdout);
+      const jobs = Array.isArray(parsed) ? parsed : [];
       return jobs.map((job: any) => ({
         ...job,
         enabled: job.enabled !== false,
@@ -75,7 +76,8 @@ export class OpenClawCronApi {
       }));
     } catch (error) {
       console.error("Failed to list cron jobs:", error);
-      throw new Error(`Failed to list cron jobs: ${error}`);
+      // Return empty array instead of crashing — lets the UI render gracefully
+      return [];
     }
   }
 
@@ -176,7 +178,8 @@ export class OpenClawCronApi {
 
     try {
       const { stdout } = await execAsync(command);
-      const runs = JSON.parse(stdout);
+      const parsed = JSON.parse(stdout);
+      const runs = Array.isArray(parsed) ? parsed : [];
       return runs.map((run: any) => ({
         ...run,
         startTime: run.start_time,
@@ -185,7 +188,8 @@ export class OpenClawCronApi {
       }));
     } catch (error) {
       console.error("Failed to get job runs:", error);
-      throw new Error(`Failed to get job runs: ${error}`);
+      // Return empty array instead of crashing
+      return [];
     }
   }
 
