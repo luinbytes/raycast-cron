@@ -1,5 +1,5 @@
-import { Form, Action, ActionPanel, Toast, Color, Icon } from "@raycast/api";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Form, Action, ActionPanel, showToast, Toast, Icon } from "@raycast/api";
 import { nlpParser, ParseResult } from "../lib/nlp-parser";
 import { openclawCronApi } from "../lib/openclaw-api";
 
@@ -79,7 +79,7 @@ export default function CronBuilder({ onBuild }: CronBuilderProps) {
     }
     
     // Fallback for custom expressions
-    const customParts = [];
+    const customParts: string[] = [];
     if (minute !== "*") customParts.push(`minute ${minute}`);
     if (hour !== "*") customParts.push(`hour ${hour}`);
     if (dayOfMonth !== "*") customParts.push(`day ${dayOfMonth}`);
@@ -114,14 +114,14 @@ export default function CronBuilder({ onBuild }: CronBuilderProps) {
       
       if (result) {
         // Parse the cron expression back to parts
-        const parts = result.expression.split(" ");
-        if (parts.length === 5) {
+        const expressionParts = result.expression.split(" ");
+        if (expressionParts.length === 5) {
           setCronParts({
-            minute: parts[0],
-            hour: parts[1],
-            dayOfMonth: parts[2],
-            month: parts[3],
-            dayOfWeek: parts[4]
+            minute: expressionParts[0],
+            hour: expressionParts[1],
+            dayOfMonth: expressionParts[2],
+            month: expressionParts[3],
+            dayOfWeek: expressionParts[4],
           });
         }
       }
@@ -144,18 +144,18 @@ export default function CronBuilder({ onBuild }: CronBuilderProps) {
         enabled: true
       });
       
-      await Toast.show({
+      await showToast({
+        style: Toast.Style.Success,
         title: "Cron Job Created",
         message: `Created: ${humanReadable}`,
-        style: Toast.Style.Success
       });
       
       onBuild(expression, humanReadable);
     } catch (error) {
-      await Toast.show({
+      await showToast({
+        style: Toast.Style.Failure,
         title: "Failed to Create Job",
         message: error instanceof Error ? error.message : "Could not create cron job",
-        style: Toast.Style.Failure
       });
     }
   };
@@ -172,7 +172,6 @@ export default function CronBuilder({ onBuild }: CronBuilderProps) {
             title="Build Cron Expression"
             icon={Icon.Check}
             onAction={buildCronExpression}
-            style={Action.Style.Primary}
           />
         </ActionPanel>
       }

@@ -1,5 +1,5 @@
-import { List, Action, ActionPanel, Toast, confirm } from "@raycast/api";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { List, Action, ActionPanel, showToast, Toast, confirmAlert, Alert } from "@raycast/api";
 import CronBuilder from "./components/CronBuilder";
 import { openclawCronApi, CronJob } from "./lib/openclaw-api";
 
@@ -24,19 +24,13 @@ export default function ListCronJobs() {
     setIsLoading(true);
     try {
       const jobs = await openclawCronApi.listJobs(true); // Include disabled jobs
-      setJobs((Array.isArray(jobs) ? jobs : []).map(job => ({
-        id: job.id,
-        name: job.name,
-        expression: job.cron,
-        description: job.description || "No description",
-        enabled: job.enabled
-      })));
+      setJobs(Array.isArray(jobs) ? jobs : []);
     } catch (error) {
       console.error("Failed to load cron jobs:", error);
-      await Toast.show({
+      await showToast({
+        style: Toast.Style.Failure,
         title: "Failed to Load Jobs",
-        message: error instanceof Error ? error.message : "Could not fetch cron jobs from OpenClaw",
-        style: Toast.Style.Failure
+        message: error instanceof Error ? error.message : "Could not fetch cron jobs from Hermes",
       });
     } finally {
       setIsLoading(false);
@@ -63,27 +57,27 @@ export default function ListCronJobs() {
       // Reload jobs to get updated status
       await loadJobs();
       
-      await Toast.show({
+      await showToast({
+        style: Toast.Style.Success,
         title: `Job ${enabled ? "Enabled" : "Disabled"}`,
         message: `Successfully ${enabled ? "enabled" : "disabled"} job`,
-        style: Toast.Style.Success
       });
     } catch (error) {
-      await Toast.show({
+      await showToast({
+        style: Toast.Style.Failure,
         title: "Failed to Toggle Job",
         message: error instanceof Error ? error.message : "Could not update job status",
-        style: Toast.Style.Failure
       });
     }
   };
 
   const deleteJob = async (jobId: string) => {
-    const confirmed = await confirm({
+    const confirmed = await confirmAlert({
       title: "Delete Cron Job",
       message: "Are you sure you want to delete this cron job? This action cannot be undone.",
       primaryAction: {
         title: "Delete",
-        style: Action.Style.Destructive,
+        style: Alert.ActionStyle.Destructive,
       },
     });
 
@@ -93,16 +87,16 @@ export default function ListCronJobs() {
       await openclawCronApi.deleteJob(jobId);
       await loadJobs();
       
-      await Toast.show({
+      await showToast({
+        style: Toast.Style.Success,
         title: "Job Deleted",
         message: "Cron job has been deleted successfully",
-        style: Toast.Style.Success
       });
     } catch (error) {
-      await Toast.show({
+      await showToast({
+        style: Toast.Style.Failure,
         title: "Failed to Delete Job",
         message: error instanceof Error ? error.message : "Could not delete cron job",
-        style: Toast.Style.Failure
       });
     }
   };
@@ -111,16 +105,16 @@ export default function ListCronJobs() {
     try {
       await openclawCronApi.runJob(jobId);
       
-      await Toast.show({
+      await showToast({
+        style: Toast.Style.Success,
         title: "Job Running",
         message: "Cron job has been triggered successfully",
-        style: Toast.Style.Success
       });
     } catch (error) {
-      await Toast.show({
+      await showToast({
+        style: Toast.Style.Failure,
         title: "Failed to Run Job",
         message: error instanceof Error ? error.message : "Could not run cron job",
-        style: Toast.Style.Failure
       });
     }
   };
@@ -155,7 +149,7 @@ export default function ListCronJobs() {
       {connectionStatus !== "Connected" && (
         <List.Item
           title="Connection Status"
-          subtitle={`OpenClaw: ${connectionStatus}`}
+          subtitle={`Hermes: ${connectionStatus}`}
           accessories={[
             {
               text: connectionStatus === "Connected" ? "✓" : "✗",
@@ -175,7 +169,6 @@ export default function ListCronJobs() {
                 title="Create New Cron Job"
                 icon="plus"
                 onAction={() => setShowBuilder(true)}
-                style={Action.Style.Primary}
               />
             </ActionPanel>
           }
@@ -187,7 +180,7 @@ export default function ListCronJobs() {
           <List.Item
             key={job.id}
             title={job.name}
-            subtitle={job.expression}
+            subtitle={job.cron}
             accessories={[
               {
                 text: job.enabled ? "Enabled" : "Disabled",
