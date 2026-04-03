@@ -37,3 +37,4 @@ Thumbs.db
 # Raycast specific
 .raycast/
 dist/
+package-lock.json
