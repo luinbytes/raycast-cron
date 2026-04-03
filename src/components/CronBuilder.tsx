@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Action, ActionPanel, showToast, Toast, Icon } from "@raycast/api";
 import { nlpParser, ParseResult } from "../lib/nlp-parser";
-import { openclawCronApi } from "../lib/openclaw-api";
+import { hermesCronApi } from "../lib/hermes-api";
 
 interface CronParts {
   minute: string;
@@ -137,7 +137,7 @@ export default function CronBuilder({ onBuild }: CronBuilderProps) {
     const expression = `${cronParts.minute} ${cronParts.hour} ${cronParts.dayOfMonth} ${cronParts.month} ${cronParts.dayOfWeek}`;
     
     try {
-      await openclawCronApi.createJob({
+      await hermesCronApi.createJob({
         name: `Cron Job - ${humanReadable}`,
         cron: expression,
         description: humanReadable,

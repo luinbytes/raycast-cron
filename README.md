@@ -1,15 +1,20 @@
 # Raycast Cron Extension
 
-A Raycast extension for cron expression management and OpenClaw integration.
+A Raycast extension for cron expression management and Hermes integration.
 
 ## Features
 
 - **🔄 Cron Expression Builder**: Build cron expressions with an interactive UI
 - **🗣️ Natural Language Parsing**: Convert phrases like "every Monday at 9am" to cron expressions
-- **🔗 OpenClaw Integration**: Create, manage, and monitor OpenClaw cron jobs
+- **🔗 Hermes Integration**: Create, manage, and monitor Hermes cron jobs
 - **👀 Real-time Preview**: See human-readable descriptions as you build expressions
 - **⚡ Job Management**: Enable, disable, delete, and run cron jobs
-- **🔍 Connection Status**: Monitor OpenClaw gateway connectivity
+- **🔍 Connection Status**: Monitor Hermes gateway connectivity
+
+## Requirements
+
+- Hermes must be installed and configured on the local machine
+- The Hermes gateway must be running for cron jobs to execute automatically
 
 ## Installation
 
@@ -38,7 +43,7 @@ A Raycast extension for cron expression management and OpenClaw integration.
 
 ### 📋 Job Listing View
 
-The main interface shows all your OpenClaw cron jobs with:
+The main interface shows all your Hermes cron jobs with:
 - Job names and descriptions
 - Cron expressions
 - Enable/disable status
@@ -73,17 +78,11 @@ The extension supports these natural language patterns:
 - **Delete**: Remove jobs with confirmation
 - **Edit**: Modify existing expressions (coming soon)
 
-## Configuration
-
-OpenClaw integration requires the following environment variables:
-
-- `OPENCLAW_GATEWAY_URL`: URL to your OpenClaw gateway
-- `OPENCLAW_TOKEN`: Authentication token for OpenClaw API
-
 ## Architecture
 
 - `src/index.tsx`: Main extension entry point and job listing
-- `src/lib/`: Utility functions and OpenClaw API client
+- `src/lib/hermes-api.ts`: Hermes cron API client (calls Python API directly)
+- `src/lib/nlp-parser.ts`: Natural language to cron expression parser
 - `src/components/`: Reusable UI components
 
 ## Development

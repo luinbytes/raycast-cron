@@ -1,7 +1,7 @@
 {
   "name": "raycast-cron",
   "version": "1.0.0",
-  "description": "A Raycast extension for cron expression management and OpenClaw integration",
+  "description": "A Raycast extension for cron expression management and Hermes integration",
   "main": "dist/index.js",
   "scripts": {
     "build": "ray build",
@@ -14,7 +14,7 @@
     "extension",
     "cron",
     "scheduler",
-    "openclaw"
+    "hermes"
   ],
   "author": "Lu",
   "license": "MIT",

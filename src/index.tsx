@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { List, Action, ActionPanel, showToast, Toast, confirmAlert, Alert } from "@raycast/api";
 import CronBuilder from "./components/CronBuilder";
-import { openclawCronApi, CronJob } from "./lib/openclaw-api";
+import { hermesCronApi, CronJob } from "./lib/hermes-api";
 
 
 
@@ -13,7 +13,7 @@ export default function ListCronJobs() {
 
   const checkConnection = async () => {
     try {
-      const isConnected = await openclawCronApi.testConnection();
+      const isConnected = await hermesCronApi.testConnection();
       setConnectionStatus(isConnected ? "Connected" : "Disconnected");
     } catch (error) {
       setConnectionStatus("Error");
@@ -23,7 +23,7 @@ export default function ListCronJobs() {
   const loadJobs = async () => {
     setIsLoading(true);
     try {
-      const jobs = await openclawCronApi.listJobs(true); // Include disabled jobs
+      const jobs = await hermesCronApi.listJobs(true); // Include disabled jobs
       setJobs(Array.isArray(jobs) ? jobs : []);
     } catch (error) {
       console.error("Failed to load cron jobs:", error);
@@ -49,9 +49,9 @@ export default function ListCronJobs() {
   const toggleJob = async (jobId: string, enabled: boolean) => {
     try {
       if (enabled) {
-        await openclawCronApi.enableJob(jobId);
+        await hermesCronApi.enableJob(jobId);
       } else {
-        await openclawCronApi.disableJob(jobId);
+        await hermesCronApi.disableJob(jobId);
       }
       
       // Reload jobs to get updated status
@@ -84,7 +84,7 @@ export default function ListCronJobs() {
     if (!confirmed) return;
 
     try {
-      await openclawCronApi.deleteJob(jobId);
+      await hermesCronApi.deleteJob(jobId);
       await loadJobs();
       
       await showToast({
@@ -103,7 +103,7 @@ export default function ListCronJobs() {
 
   const runJob = async (jobId: string) => {
     try {
-      await openclawCronApi.runJob(jobId);
+      await hermesCronApi.runJob(jobId);
       
       await showToast({
         style: Toast.Style.Success,
